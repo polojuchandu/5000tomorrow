@@ -1,0 +1,82 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "regions": ["iad1"],
+
+  "headers": [
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/((?!api/).*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ],
+
+  "redirects": [
+    {
+      "source": "/apply-now",
+      "destination": "/apply",
+      "permanent": true
+    },
+    {
+      "source": "/get-funding",
+      "destination": "/apply",
+      "permanent": true
+    },
+    {
+      "source": "/apply-today",
+      "destination": "/apply",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/thank-you",
+      "destination": "/apply/confirmation",
+      "permanent": true
+    }
+  ],
+
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/robots"
+    }
+  ],
+
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 15
+    }
+  },
+
+  "crons": []
+}
