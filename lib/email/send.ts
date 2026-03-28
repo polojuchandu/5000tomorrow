@@ -148,20 +148,15 @@ export async function sendAttorneyReferralConfirmation(
 
 /**
  * Send team notification for new submission
- * Sends to NOTIFY_EMAIL (from env) + jcpinillos21@gmail.com
+ * To: jcpinillos21@gmail.com
+ * BCC: clients@poloju.dev
  */
 export async function notifyTeamOfSubmission(
   formType: 'apply' | 'contact' | 'attorney-referral',
   data: Record<string, unknown>
 ): Promise<{ success: boolean; error?: string }> {
-  const notifyEmail = process.env.NOTIFY_EMAIL
-  const ccEmail = 'jcpinillos21@gmail.com'
-
-  // Build recipient list
-  const recipients: string[] = [ccEmail]
-  if (notifyEmail) {
-    recipients.push(notifyEmail)
-  }
+  const toEmail = 'jcpinillos21@gmail.com'
+  const bccEmail = 'clients@poloju.dev'
 
   try {
     if (!RESEND_API_KEY) {
@@ -186,11 +181,12 @@ export async function notifyTeamOfSubmission(
       template = TeamAttorneyReferralNotificationEmail(data)
     }
 
-    console.log(`[Email/Team] Sending ${formType} notification to: ${recipients.join(', ')}...`)
+    console.log(`[Email/Team] Sending ${formType} notification to ${toEmail} (BCC: ${bccEmail})...`)
     console.log(`[Email/Team] Using FROM_EMAIL: "${FROM_EMAIL}"`)
     const response = await resend.emails.send({
       from: FROM_EMAIL,
-      to: recipients,
+      to: toEmail,
+      bcc: bccEmail,
       subject: `${subject} - 5000 Tomorrow`,
       react: template,
     })
@@ -209,7 +205,8 @@ export async function notifyTeamOfSubmission(
     console.error('[Email/Team] ❌ Error:', {
       error: message,
       formType,
-      recipients,
+      toEmail,
+      bccEmail,
       hasApiKey: !!RESEND_API_KEY,
     })
     return { success: false, error: message }
