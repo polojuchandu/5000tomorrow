@@ -11,7 +11,7 @@ export default function StickyMobileCTA() {
         <div className="flex items-center justify-between gap-2 h-16 px-4">
           {/* Left: Heading */}
           <p className="font-bold text-[#0A1628] text-sm truncate">
-            Get $5,000 Today
+            Get $5,000 Tomorrow
           </p>
 
           {/* Right: Buttons */}
