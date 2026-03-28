@@ -18,7 +18,7 @@ export const SITE = {
   },
   twitter:        '@5000Tomorrow',
   description:    'Michigan pre-settlement legal funding. Get up to $5,000 within 24 hours. No credit check. No upfront fees. Repay only if you win.',
-  defaultOgImage: '/images/og/default.jpg',
+  defaultOgImage: '/favicon.ico',
 } as const
 
 // ─── Root Metadata (used in app/layout.tsx) ───────────────────────────────────
