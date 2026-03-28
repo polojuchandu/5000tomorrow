@@ -13,12 +13,12 @@ const QUICK_LINKS = [
 ]
 
 const CASE_TYPES_LINKS = [
-  { label: 'Auto Accidents', href: '/cases/car-accident' },
-  { label: 'Truck Accidents', href: '/cases/truck-accident' },
-  { label: 'Motorcycle Accidents', href: '/cases/motorcycle-accident' },
-  { label: 'Workers Comp', href: '/cases/workers-compensation' },
-  { label: 'Slip and Fall', href: '/cases/slip-and-fall' },
-  { label: 'Wrongful Death', href: '/cases/wrongful-death' },
+  { label: 'Auto Accidents', href: '/case-types/car-accident' },
+  { label: 'Truck Accidents', href: '/case-types/truck-accident' },
+  { label: 'Motorcycle Accidents', href: '/case-types/motorcycle-accident' },
+  { label: 'Workers Comp', href: '/case-types/workers-compensation' },
+  { label: 'Slip and Fall', href: '/case-types/slip-and-fall' },
+  { label: 'Wrongful Death', href: '/case-types/wrongful-death' },
 ]
 
 const SOCIAL_LINKS = [

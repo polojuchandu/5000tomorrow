@@ -5,7 +5,7 @@ import ApplyButton from '@/components/common/ApplyButton'
 const HELPFUL_LINKS = [
   { href: '/how-it-works',    icon: FileText,    label: 'How It Works'       },
   { href: '/faq',             icon: HelpCircle,  label: 'FAQ'                },
-  { href: '/cities',          icon: MapPin,      label: 'Cities We Serve'    },
+  { href: '/',                icon: MapPin,      label: 'Cities We Serve'    },
   { href: '/apply',           icon: ArrowLeft,   label: 'Apply Now'          },
 ]
 

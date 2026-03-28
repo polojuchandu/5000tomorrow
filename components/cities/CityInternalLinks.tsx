@@ -94,7 +94,7 @@ export default function CityInternalLinks({ city }: CityInternalLinksProps) {
             </ul>
 
             <Link
-              href="/cities"
+              href="/"
               aria-label="View all Michigan cities we serve"
               data-event="click"
               data-event-label={`city_links_all_cities_from_${city.slug}`}
