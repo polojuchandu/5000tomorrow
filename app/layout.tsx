@@ -4,6 +4,7 @@ import { Inter, Geist } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { Header, Footer, StickyMobileCTA } from "@/components/layout"
+import ChatWidget from "@/components/chat/ChatWidget"
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -74,6 +75,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}');`,
         </main>
         <Footer />
         <StickyMobileCTA />
+        <ChatWidget />
       </body>
     </html>
   )
