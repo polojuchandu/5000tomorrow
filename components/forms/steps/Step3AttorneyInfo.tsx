@@ -83,7 +83,7 @@ export default function Step3AttorneyInfo({ formData, onNext, onPrev }: Step3Pro
   } = useForm<Step3Data>({
     resolver:      zodResolver(step3Schema),
     defaultValues: {
-      hasAttorney:       typeof formData.hasAttorney === 'boolean' ? formData.hasAttorney : undefined,
+      hasAttorney:       formData.hasAttorney        ?? undefined,
       attorneyFirstName: formData.attorneyFirstName  ?? '',
       attorneyLastName:  formData.attorneyLastName   ?? '',
       attorneyFirm:      formData.attorneyFirm       ?? '',

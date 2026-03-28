@@ -11,7 +11,7 @@ const STEPS = [
   {
     icon:  ClipboardList,
     title: 'Apply Online in Minutes',
-    body:  'Fill out our simple form with your case type, incident details, and your attorney\'s contact info. No credit check. No paperwork.',
+    body:  'Fill out our simple form with your case type, incident details, and your attorney's contact info. No credit check. No paperwork.',
   },
   {
     icon:  UserCheck,

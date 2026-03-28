@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useApplyForm } from '@/hooks/useApplyForm'
 import FormProgress     from '@/components/forms/FormProgress'
 import Step1CaseType    from '@/components/forms/steps/Step1CaseType'
@@ -43,7 +43,7 @@ export default function ApplyFunnel() {
   } = useApplyForm()
 
   // Slide animation (direction-aware, skip if reduced motion)
-  const slideVariants: Variants = prefersReducedMotion
+  const slideVariants = prefersReducedMotion
     ? {
         enter:  { opacity: 0 },
         center: { opacity: 1, transition: { duration: 0.2 } },
@@ -51,8 +51,8 @@ export default function ApplyFunnel() {
       }
     : {
         enter:  { opacity: 0, x: 32 },
-        center: { opacity: 1, x: 0,  transition: { duration: 0.3 } },
-        exit:   { opacity: 0, x: -24, transition: { duration: 0.2 } },
+        center: { opacity: 1, x: 0,  transition: { duration: 0.3, ease: 'easeOut' } },
+        exit:   { opacity: 0, x: -24, transition: { duration: 0.2, ease: 'easeIn' } },
       }
 
   return (

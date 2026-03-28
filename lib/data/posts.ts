@@ -6,7 +6,7 @@ const EDITORIAL_TEAM = {
   name:  'Editorial Team',
   slug:  'editorial-team',
   title: 'Legal Funding Education',
-  bio:   '5000 Tomorrow\'s editorial team writes practical guides for Michigan injury victims navigating the legal funding process.',
+  bio:   '5000 Tomorrow's editorial team writes practical guides for Michigan injury victims navigating the legal funding process.',
 }
 
 // ─── Placeholder blog posts ───────────────────────────────────────────────────

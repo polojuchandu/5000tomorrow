@@ -56,7 +56,7 @@ function mapLeadToCRM(data: FullApplyFormData): CRMPayload {
     injuryDescription:   data.injuryDescription,
     hospitalized:        data.hospitalized,
     treatmentOngoing:    data.treatmentOngoing,
-    hasAttorney:         data.hasAttorney === true,
+    hasAttorney:         data.hasAttorney,
     attorneyFirstName:   data.attorneyFirstName,
     attorneyLastName:    data.attorneyLastName,
     attorneyFirm:        data.attorneyFirm,

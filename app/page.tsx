@@ -36,7 +36,15 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: serializeSchema(jsonLd) }}
       />
 
-      <main>
+      {/* Skip-to-main-content link (WCAG 2.4.1) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-xl focus:bg-[#C9A84C] focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-[#0A1628] focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
+
+      <main id="main-content">
         {/*
          * Section render order (conversion-optimized):
          * 1. Hero          — immediate value prop + form

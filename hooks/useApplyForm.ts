@@ -80,6 +80,13 @@ function removeDraft(): void {
 
 // ─── Analytics ────────────────────────────────────────────────────────────────
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+    dataLayer?: Record<string, unknown>[]
+  }
+}
+
 function trackApplyStep(step: number, draft: ApplyDraft): void {
   if (typeof window === 'undefined') return
 
