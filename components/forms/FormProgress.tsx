@@ -64,20 +64,16 @@ export default function FormProgress({
             <li
               key={s.label}
               aria-current={isCurrent ? 'step' : undefined}
-              className={cn(
-                'flex flex-col items-center relative',
-                idx < steps.length - 1 ? 'flex-1' : '',
-              )}
+              className="flex flex-col items-center relative flex-1"
             >
               {/* Connecting line (before each step except first) */}
               {idx > 0 && (
                 <div
                   aria-hidden="true"
                   className={cn(
-                    'absolute top-3.5 right-1/2 w-full h-0.5 -translate-y-1/2',
+                    'absolute w-full top-1/2 -translate-y-3 -translate-x-1/2 h-0.5',
                     isComplete ? 'bg-[#C9A84C]' : 'bg-slate-200',
                   )}
-                  style={{ left: '-50%', right: '50%', width: '100%' }}
                 />
               )}
 
