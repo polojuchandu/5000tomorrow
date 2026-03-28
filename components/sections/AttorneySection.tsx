@@ -4,7 +4,7 @@ import ApplyButton from '@/components/common/ApplyButton'
 
 const ATTORNEY_BENEFITS = [
   'We coordinate directly with your attorney — no extra work for you',
-  'No impact on your attorney's fee arrangement',
+  'No impact on your attorney\'s fee arrangement',
   'Fast approval process your attorney is already familiar with',
   'Funds go directly to you, not your legal team',
   'Confidential — attorney-client privilege unaffected',
