@@ -17,20 +17,20 @@ interface CaseTypeMeta {
 }
 
 const CASE_TYPE_META: Record<CaseTypeSlug, CaseTypeMeta> = {
-  'car-accident':         { icon: Car,           label: 'Car Accident',          path: '/cases/car-accident'         },
-  'truck-accident':       { icon: Truck,          label: 'Truck Accident',         path: '/cases/truck-accident'       },
-  'motorcycle-accident':  { icon: Bike,           label: 'Motorcycle Accident',    path: '/cases/motorcycle-accident'  },
-  'pedestrian-accident':  { icon: User,           label: 'Pedestrian Accident',    path: '/cases/pedestrian-accident'  },
-  'rideshare-accident':   { icon: Car,            label: 'Rideshare Accident',     path: '/cases/rideshare-accident'   },
-  'hit-and-run':          { icon: Car,            label: 'Hit & Run',              path: '/cases/car-accident'         },
-  'bicycle-accident':     { icon: Bike,           label: 'Bicycle Accident',       path: '/cases/pedestrian-accident'  },
-  'workers-compensation': { icon: HardHat,        label: "Workers' Comp",          path: '/cases/workers-compensation' },
-  'slip-and-fall':        { icon: AlertTriangle,  label: 'Slip & Fall',            path: '/cases/slip-and-fall'        },
-  'workplace-injury':     { icon: HardHat,        label: 'Workplace Injury',       path: '/cases/workplace-injury'     },
-  'wrongful-death':       { icon: Scale,          label: 'Wrongful Death',         path: '/cases/wrongful-death'       },
-  'personal-injury':      { icon: Scale,          label: 'Personal Injury',        path: '/cases/personal-injury'      },
-  'premises-liability':   { icon: AlertTriangle,  label: 'Premises Liability',     path: '/cases/slip-and-fall'        },
-  'other':                { icon: Scale,          label: 'Other Cases',            path: '/cases'                      },
+  'car-accident':         { icon: Car,           label: 'Car Accident',          path: '/case-types/car-accident'         },
+  'truck-accident':       { icon: Truck,          label: 'Truck Accident',         path: '/case-types/truck-accident'       },
+  'motorcycle-accident':  { icon: Bike,           label: 'Motorcycle Accident',    path: '/case-types/motorcycle-accident'  },
+  'pedestrian-accident':  { icon: User,           label: 'Pedestrian Accident',    path: '/case-types/pedestrian-accident'  },
+  'rideshare-accident':   { icon: Car,            label: 'Rideshare Accident',     path: '/case-types/rideshare-accident'   },
+  'hit-and-run':          { icon: Car,            label: 'Hit & Run',              path: '/case-types/hit-and-run'         },
+  'bicycle-accident':     { icon: Bike,           label: 'Bicycle Accident',       path: '/case-types/bicycle-accident'  },
+  'workers-compensation': { icon: HardHat,        label: "Workers' Comp",          path: '/case-types/workers-compensation' },
+  'slip-and-fall':        { icon: AlertTriangle,  label: 'Slip & Fall',            path: '/case-types/slip-and-fall'        },
+  'workplace-injury':     { icon: HardHat,        label: 'Workplace Injury',       path: '/case-types/workplace-injury'     },
+  'wrongful-death':       { icon: Scale,          label: 'Wrongful Death',         path: '/case-types/wrongful-death'       },
+  'personal-injury':      { icon: Scale,          label: 'Personal Injury',        path: '/case-types/personal-injury'      },
+  'premises-liability':   { icon: AlertTriangle,  label: 'Premises Liability',     path: '/case-types/premises-liability'        },
+  'other':                { icon: Scale,          label: 'Other Cases',            path: '/case-types/other'                      },
 }
 
 export default function CityInternalLinks({ city }: CityInternalLinksProps) {

@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { Inter, Geist } from "next/font/google"
 import "./globals.css"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { Header, Footer, StickyMobileCTA } from "@/components/layout"
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -18,8 +19,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
+      <body className={cn(inter.className, "flex flex-col min-h-screen bg-slate-50")}>
+        <Header />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+        <StickyMobileCTA />
+      </body>
     </html>
   )
 }

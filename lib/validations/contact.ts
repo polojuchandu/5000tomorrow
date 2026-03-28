@@ -33,8 +33,7 @@ export const contactSchema = z.object({
     ),
   subject: z.enum(
     CONTACT_SUBJECTS.map((s) => s.value) as [ContactSubject, ...ContactSubject[]],
-    { errorMap: () => ({ message: 'Please select a subject' }) },
-  ),
+  ).refine((v) => v !== undefined, 'Please select a subject'),
   message: z
     .string()
     .min(10, 'Please provide a message (at least 10 characters)')

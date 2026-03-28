@@ -127,7 +127,7 @@ export function generateHomepageMetadata(): Metadata {
 export function generateCaseMetadata(
   caseType: Pick<CaseType, 'slug' | 'metaTitle' | 'metaDescription' | 'shortTitle'>,
 ): Metadata {
-  const url = `${SITE.url}/cases/${caseType.slug}`
+  const url = `${SITE.url}/case-types/${caseType.slug}`
 
   return {
     title:       caseType.metaTitle,
@@ -140,7 +140,7 @@ export function generateCaseMetadata(
       description: caseType.metaDescription,
       url,
       images: buildOgImages(
-        `/images/og/cases/${caseType.slug}.jpg`,
+        `/images/og/case-types/${caseType.slug}.jpg`,
         `${caseType.shortTitle} Pre-Settlement Funding — Michigan`,
       ),
     },
@@ -148,7 +148,7 @@ export function generateCaseMetadata(
       ...rootMetadata.twitter,
       title:       caseType.metaTitle,
       description: caseType.metaDescription,
-      images:      [ogImageUrl(`/images/og/cases/${caseType.slug}.jpg`)],
+      images:      [ogImageUrl(`/images/og/case-types/${caseType.slug}.jpg`)],
     },
   }
 }

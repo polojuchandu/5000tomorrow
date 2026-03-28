@@ -45,12 +45,12 @@ const BENEFITS = [
   {
     icon:  Clock,
     title: 'Fast Case Review',
-    body:  'Our team evaluates cases quickly — typically the same business day you submit the referral. We'll call or email with a decision.',
+    body:  'Our team evaluates cases quickly — typically the same business day you submit the referral. We\'ll call or email with a decision.',
   },
   {
     icon:  Shield,
     title: 'No Risk to Your Client',
-    body:  'Our funding is strictly non-recourse. If your client's case doesn't win, they owe nothing. Their credit, assets, and savings are never at risk.',
+    body:  'Our funding is strictly non-recourse. If your client\'s case doesn\'t win, they owe nothing. Their credit, assets, and savings are never at risk.',
   },
   {
     icon:  Scale,
@@ -60,7 +60,7 @@ const BENEFITS = [
   {
     icon:  CheckCircle,
     title: 'Michigan-Specific',
-    body:  'We understand Michigan court timelines, no-fault insurance complexity, and the local PI attorney community. You'll work with people who know your cases.',
+    body:  'We understand Michigan court timelines, no-fault insurance complexity, and the local PI attorney community. You\'ll work with people who know your cases.',
   },
 ]
 
@@ -87,13 +87,6 @@ export default function AttorneyPortalPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeSchema(jsonLd) }}
       />
-
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-xl focus:bg-[#C9A84C] focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-[#0A1628] focus:shadow-lg"
-      >
-        Skip to main content
-      </a>
 
       <main id="main-content">
 

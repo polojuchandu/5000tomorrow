@@ -55,7 +55,7 @@ const CASE_TYPES: CaseCard[] = [
     slug:        'hit-and-run',
     icon:        Zap,
     title:       'Hit & Run',
-    description: 'Uninsured motorist claims can take months. Don't wait on the at-fault driver to be found.',
+    description: 'Uninsured motorist claims can take months. Don\'t wait on the at-fault driver to be found.',
     isPrimary:   true,
   },
   {
@@ -84,7 +84,7 @@ const CASE_TYPES: CaseCard[] = [
     slug:        'workplace-injury',
     icon:        Building2,
     title:       'Workplace Injury',
-    description: 'Third-party workplace negligence claims may exceed workers' comp alone.',
+    description: 'Third-party workplace negligence claims may exceed workers\' comp alone.',
     isPrimary:   false,
   },
   {
@@ -105,7 +105,7 @@ const CASE_TYPES: CaseCard[] = [
     slug:        'premises-liability',
     icon:        Home,
     title:       'Premises Liability',
-    description: 'Injuries on someone else's property due to negligence qualify for pre-settlement funding.',
+    description: 'Injuries on someone else\'s property due to negligence qualify for pre-settlement funding.',
     isPrimary:   false,
   },
   {
@@ -183,7 +183,7 @@ function CaseTypeCard({ card }: CaseCardProps) {
 
       {/* Learn more link */}
       <Link
-        href={`/cases/${card.slug}`}
+        href={`/case-types/${card.slug}`}
         aria-label={`Learn about ${card.title} pre-settlement funding`}
         data-event="click"
         data-event-label={`case_card_${card.slug}`}

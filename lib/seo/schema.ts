@@ -128,7 +128,7 @@ export function buildServiceSchema(
     serviceType:  'Legal Funding / Pre-Settlement Advance',
     description:  serviceDescription,
     url: caseType
-      ? `${SITE.url}/cases/${caseType.slug}`
+      ? `${SITE.url}/case-types/${caseType.slug}`
       : SITE.url,
     provider: {
       '@id': `${SITE.url}/#organization`,

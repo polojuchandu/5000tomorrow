@@ -25,9 +25,10 @@ export const attorneyReferralSchema = z.object({
   attorneyLastName:  z.string().min(1, 'Last name is required').max(60),
   firmName:          z.string().min(1, 'Firm name is required').max(120),
   barNumber:         z.string().max(20).optional(),
-  licenseState:      z.literal('MI', {
-    errorMap: () => ({ message: 'Must be a licensed Michigan attorney' }),
-  }),
+  licenseState:      z.literal('MI').refine(
+    (v) => v === 'MI',
+    'Must be a licensed Michigan attorney',
+  ),
   attorneyPhone:     phoneValidator,
   attorneyEmail:     z.string().email('Valid email required'),
 
@@ -35,8 +36,7 @@ export const attorneyReferralSchema = z.object({
   clientFirstName:   z.string().min(1, 'Client first name is required').max(60),
   clientLastName:    z.string().min(1, 'Client last name is required').max(60),
   clientPhone:       phoneValidator,
-  clientEmail:       z.union([z.string().email('Invalid email'), z.literal('')]).optional()
-    .transform((v) => (v === '' ? undefined : v)),
+  clientEmail:       z.string().email('Invalid email').optional(),
 
   // ── Case details ──────────────────────────────────────────────────────────
   caseType:              z.string().min(1, 'Please select a case type'),
@@ -46,9 +46,10 @@ export const attorneyReferralSchema = z.object({
   notes:                 z.string().max(1000, 'Notes too long (max 1,000 characters)').optional(),
 
   // ── Consent ───────────────────────────────────────────────────────────────
-  agreeToTerms: z.literal(true, {
-    errorMap: () => ({ message: 'You must confirm your agreement to submit a referral' }),
-  }),
+  agreeToTerms: z.literal(true).refine(
+    (v) => v === true,
+    'You must confirm your agreement to submit a referral',
+  ),
 })
 
 export type AttorneyReferralFormData = z.infer<typeof attorneyReferralSchema>

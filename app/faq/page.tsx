@@ -214,13 +214,6 @@ export default function FAQPage() {
         dangerouslySetInnerHTML={{ __html: serializeSchema(jsonLd) }}
       />
 
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-xl focus:bg-[#C9A84C] focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-[#0A1628] focus:shadow-lg"
-      >
-        Skip to main content
-      </a>
-
       <main id="main-content">
 
         {/* ── Hero ──────────────────────────────────────────────────── */}

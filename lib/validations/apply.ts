@@ -44,10 +44,10 @@ const CASE_TYPE_VALUES = CASE_TYPE_OPTIONS.map((o) => o.value) as [
 // ─── Step 1: Case Type ────────────────────────────────────────────────────────
 
 export const step1Schema = z.object({
-  caseType: z.enum(CASE_TYPE_VALUES, {
-    required_error:      'Please select your case type',
-    invalid_type_error:  'Please select a valid case type',
-  }),
+  caseType: z.enum(CASE_TYPE_VALUES).refine(
+    (v) => v !== undefined,
+    'Please select your case type',
+  ),
   incidentDate: z
     .string()
     .min(1, 'Incident date is required')
@@ -56,9 +56,7 @@ export const step1Schema = z.object({
       return !isNaN(d.getTime())
     }, 'Please enter a valid date')
     .refine((v) => new Date(v) <= new Date(), 'Date cannot be in the future'),
-  hasActiveLawsuit: z.boolean({
-    required_error: 'Please indicate whether a lawsuit has been filed',
-  }),
+  hasActiveLawsuit: z.boolean(),
 })
 
 export type Step1Data = z.infer<typeof step1Schema>
@@ -160,9 +158,10 @@ export type Step4Data = z.infer<typeof step4Schema>
 // ─── Step 5: Review & Submit ─────────────────────────────────────────────────
 
 export const step5Schema = z.object({
-  agreeToTerms: z.literal(true, {
-    errorMap: () => ({ message: 'You must agree to the terms to submit your application' }),
-  }),
+  agreeToTerms: z.literal(true).refine(
+    (v) => v === true,
+    'You must agree to the terms to submit your application',
+  ),
 })
 
 export type Step5Data = z.infer<typeof step5Schema>
@@ -174,7 +173,7 @@ export const fullApplySchema = step1Schema
   .merge(
     // Flatten step3 — merge drops the superRefine; re-validate key fields
     z.object({
-      hasAttorney:       z.literal(true, { errorMap: () => ({ message: 'Attorney required' }) }),
+      hasAttorney:       z.literal(true).refine((v) => v === true, 'Attorney required'),
       attorneyFirstName: z.string().min(1, 'Required').max(60),
       attorneyLastName:  z.string().min(1, 'Required').max(60),
       attorneyFirm:      z.string().min(1, 'Required').max(120),

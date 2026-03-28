@@ -98,14 +98,14 @@ export const CAR_ACCIDENT_METADATA_EXAMPLE: Metadata = {
   openGraph: {
     type:     'website',
     locale:   'en_US',
-    url:      'https://www.5000tomorrow.com/cases/car-accident',
+    url:      'https://www.5000tomorrow.com/case-types/car-accident',
     siteName: '5000 Tomorrow',
     title:    'Car Accident Settlement Funding Michigan | 5000 Tomorrow',
     description:
       'Injured in a Michigan car accident? Get up to $5,000 in pre-settlement funding while your case is pending. No credit check. No upfront fees. Repay only if you win.',
     images: [
       {
-        url:    'https://www.5000tomorrow.com/images/og/cases/car-accident.jpg',
+        url:    'https://www.5000tomorrow.com/images/og/case-types/car-accident.jpg',
         width:  1200,
         height: 630,
         alt:    'Car Accident Pre-Settlement Funding — Michigan',
@@ -119,6 +119,6 @@ export const CAR_ACCIDENT_METADATA_EXAMPLE: Metadata = {
     creator:     '@5000Tomorrow',
     title:       'Car Accident Settlement Funding Michigan | 5000 Tomorrow',
     description: 'Injured in a Michigan car accident? Get up to $5,000 in pre-settlement funding. No credit check. No upfront fees. Repay only if you win.',
-    images:      ['https://www.5000tomorrow.com/images/og/cases/car-accident.jpg'],
+    images:      ['https://www.5000tomorrow.com/images/og/case-types/car-accident.jpg'],
   },
 }
