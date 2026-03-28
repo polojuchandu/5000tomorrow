@@ -13,6 +13,11 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "5000 Tomorrow | Michigan Legal Funding",
   description: "Get up to $5,000 before your case settles. Fast pre-settlement legal funding for Michigan residents.",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
