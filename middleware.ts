@@ -35,25 +35,6 @@ const REDIRECTS: Record<string, string> = {
   '/cities':       '/',
 }
 
-// ─── Michigan-only geo check ──────────────────────────────────────────────────
-// Vercel provides the 'x-vercel-ip-country' and 'x-vercel-ip-country-region' headers.
-// Michigan region code is 'MI'. Only enforce on apply routes to avoid false blocks.
-
-const GEO_RESTRICTED_PATHS = ['/apply']
-
-function isOutsideMichigan(req: NextRequest): boolean {
-  if (process.env.NODE_ENV !== 'production') return false
-
-  const country = req.headers.get('x-vercel-ip-country')
-  const region  = req.headers.get('x-vercel-ip-country-region')
-
-  // Block non-US entirely for apply routes
-  if (country && country !== 'US') return true
-  // Block US states other than MI for apply routes
-  if (country === 'US' && region && region !== 'MI') return true
-  return false
-}
-
 // ─── Middleware ───────────────────────────────────────────────────────────────
 
 export function middleware(req: NextRequest): NextResponse {
@@ -65,17 +46,7 @@ export function middleware(req: NextRequest): NextResponse {
     return NextResponse.redirect(new URL(redirectTarget, req.url), { status: 301 })
   }
 
-  // 2. Geo restriction for apply routes
-  const isRestrictedPath = GEO_RESTRICTED_PATHS.some((p) => pathname.startsWith(p))
-  if (isRestrictedPath && isOutsideMichigan(req)) {
-    const response = NextResponse.rewrite(new URL('/michigan-only', req.url))
-    for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
-      response.headers.set(key, value)
-    }
-    return response
-  }
-
-  // 3. Add security headers to all responses
+  // 2. Add security headers to all responses
   const response = NextResponse.next()
   for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
     response.headers.set(key, value)
