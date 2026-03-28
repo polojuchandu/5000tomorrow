@@ -266,7 +266,7 @@ export default function ChatWidget() {
         <div className="fixed z-50 bottom-24 right-4 md:bottom-6 md:right-6">
           {/* Pulse ring */}
           <span
-            className="absolute inset-0 rounded-full bg-[#C9A84C] animate-ping opacity-75 pointer-events-none"
+            className="absolute inset-0 rounded-full bg-[#C9A84C] animate-subtle-breath pointer-events-none"
             aria-hidden="true"
           />
 
@@ -280,7 +280,7 @@ export default function ChatWidget() {
 
           <button
             onClick={() => setIsOpen(true)}
-            className="relative w-16 h-16 rounded-full bg-[#C9A84C] text-white shadow-lg flex items-center justify-center hover:bg-[#b8943e] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] focus-visible:ring-offset-2"
+            className="relative w-16 h-16 rounded-full bg-[#C9A84C] text-white shadow-lg flex items-center justify-center hover:bg-[#b8943e] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] focus-visible:ring-offset-2 animate-subtle-breath"
             aria-label="Open chat with 5000 Tomorrow"
           >
             <MessageCircle size={28} aria-hidden="true" />
@@ -315,7 +315,7 @@ export default function ChatWidget() {
 
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 <span
-                  className="w-2.5 h-2.5 rounded-full bg-green-400 flex-shrink-0 animate-pulse"
+                  className="w-2.5 h-2.5 rounded-full bg-green-400 flex-shrink-0"
                   aria-hidden="true"
                 />
                 <div className="min-w-0">

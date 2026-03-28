@@ -10,13 +10,6 @@ export default function TypingIndicator() {
           <motion.span
             key={i}
             className="w-2 h-2 rounded-full bg-white block"
-            animate={{ y: [0, -5, 0] }}
-            transition={{
-              duration: 0.6,
-              repeat: Infinity,
-              delay: i * 0.15,
-              ease: 'easeInOut',
-            }}
           />
         ))}
       </div>
