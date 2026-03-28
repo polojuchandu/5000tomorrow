@@ -12,11 +12,11 @@ interface Step {
 
 const STEPS: Step[] = [
   {
-    number: '01',
-    icon:   ClipboardList,
-    title:  'Apply in 5 Minutes',
-    body:   'Fill out our simple online form. Tell us your case type, city, and attorney contact. No paperwork. No credit check.',
-    detail: 'Available 24/7 online',
+    number: '03',
+    icon:   BanknoteIcon,
+    title:  'Funds Sent to You',
+    body:   'Once approved, up to $5,000 is sent directly to you. You repay nothing unless your case wins or settles.',
+    detail: 'Funds typically in 24 hours',
   },
   {
     number: '02',
@@ -26,11 +26,11 @@ const STEPS: Step[] = [
     detail: 'Most decisions same business day',
   },
   {
-    number: '03',
-    icon:   BanknoteIcon,
-    title:  'Funds Sent to You',
-    body:   'Once approved, up to $5,000 is sent directly to you. You repay nothing unless your case wins or settles.',
-    detail: 'Funds typically in 24 hours',
+    number: '01',
+    icon:   ClipboardList,
+    title:  'Apply in 5 Minutes',
+    body:   'Fill out our simple online form. Tell us your case type, city, and attorney contact. No paperwork. No credit check.',
+    detail: 'Available 24/7 online',
   },
 ]
 
@@ -68,7 +68,7 @@ export default function HowItWorksSection() {
           {/* Connecting line — desktop only */}
           <div
             aria-hidden="true"
-            className="hidden md:block absolute top-10 left-[calc(16.666%+2rem)] right-[calc(16.666%+2rem)] h-0.5 bg-gradient-to-r from-[#C9A84C]/30 via-[#C9A84C] to-[#C9A84C]/30"
+            className="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(16.666%+2rem)] right-[calc(16.666%+2rem)] h-0.5 bg-gradient-to-r from-[#C9A84C]/30 via-[#C9A84C] to-[#C9A84C]/30 -z-10"
           />
 
           {STEPS.map((step, idx) => {

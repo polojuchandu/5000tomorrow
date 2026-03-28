@@ -35,9 +35,12 @@ export default function Header() {
               className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded-lg px-2 py-1"
               aria-label="5000 Tomorrow home"
             >
-              <div className="w-8 h-8 rounded-lg bg-[#C9A84C] flex items-center justify-center flex-shrink-0">
-                <span className="text-[#0A1628] font-bold text-sm">5K</span>
-              </div>
+              <img
+                src="/5000-logo.svg"
+                alt="5000 Tomorrow Logo"
+                className="w-8 h-8 rounded-lg bg-[#C9A84C] flex-shrink-0"
+                style={{ objectFit: 'contain' }}
+              />
               <div className="hidden sm:block">
                 <div className="text-sm font-bold text-white leading-none">
                   5000 Tomorrow

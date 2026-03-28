@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Menu, X, Phone } from 'lucide-react'
@@ -34,11 +35,18 @@ export default function Header() {
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 font-bold text-white hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded"
+              className="hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded"
               aria-label="5000 Tomorrow - Home"
             >
-              <span className="text-[#C9A84C]">5000</span>
-              <span>Tomorrow</span>
+              <Image
+                src="/5000-logo.svg"
+                alt="5000 Tomorrow"
+                width={160}
+                height={56}
+                className="h-12 w-auto"
+                priority
+                unoptimized
+              />
             </Link>
 
             {/* Desktop Navigation */}

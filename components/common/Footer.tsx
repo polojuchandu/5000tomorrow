@@ -48,9 +48,12 @@ export default function Footer() {
               className="inline-flex items-center gap-2 group mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded-lg px-2 py-1"
               aria-label="5000 Tomorrow home"
             >
-              <div className="w-10 h-10 rounded-lg bg-[#C9A84C] flex items-center justify-center">
-                <span className="text-[#0A1628] font-bold">5K</span>
-              </div>
+              <img
+                src="/5000-logo.svg"
+                alt="5000 Tomorrow Logo"
+                className="w-10 h-10 rounded-lg bg-[#C9A84C] flex-shrink-0"
+                style={{ objectFit: 'contain' }}
+              />
               <div>
                 <div className="text-base font-bold text-white">
                   5000 Tomorrow
