@@ -7,12 +7,14 @@ import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import { contactSchema, CONTACT_SUBJECTS, type ContactFormData } from '@/lib/validations/contact'
 import { gtagEvent } from '@/lib/analytics/gtag'
 import { pixelContact } from '@/lib/analytics/pixel'
+import TurnstileWidget from '@/components/ui/turnstile'
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 export default function ContactForm() {
   const [formState, setFormState] = useState<FormState>('idle')
   const [serverError, setServerError] = useState<string>('')
+  const [turnstileToken, setTurnstileToken] = useState<string>('')
 
   const {
     register,
@@ -25,27 +27,39 @@ export default function ContactForm() {
   })
 
   async function onSubmit(data: ContactFormData) {
+    if (!turnstileToken) {
+      setServerError('Please complete the CAPTCHA verification.')
+      return
+    }
+
+    console.log('[ContactForm] onSubmit called with data:', data)
     setFormState('submitting')
     setServerError('')
 
     try {
+      console.log('[ContactForm] Sending request to /api/contact with method POST')
       const res = await fetch('/api/contact', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(data),
+        body:    JSON.stringify({ ...data, turnstileToken }),
       })
 
+      console.log('[ContactForm] Response received:', res.status, res.statusText)
+      const body = await res.json().catch(() => ({})) as { error?: string }
+
       if (!res.ok) {
-        const body = await res.json().catch(() => ({})) as { error?: string }
         throw new Error(body.error ?? 'Something went wrong. Please try again.')
       }
 
+      console.log('[ContactForm] ✅ Submission successful')
       gtagEvent('contact_form_submit', { event_category: 'contact', event_label: data.subject })
       pixelContact()
       setFormState('success')
       reset()
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : 'Something went wrong.')
+      const message = err instanceof Error ? err.message : 'Something went wrong.'
+      console.error('[ContactForm] ❌ Submission failed:', message)
+      setServerError(message)
       setFormState('error')
     }
   }
@@ -78,7 +92,13 @@ export default function ContactForm() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => {
+        console.log('[ContactForm] Form submission event captured - preventDefault will be called')
+        e.preventDefault()
+        handleSubmit(onSubmit)(e).catch((err) => {
+          console.error('[ContactForm] handleSubmit error:', err)
+        })
+      }}
       noValidate
       aria-label="Contact form"
       className="space-y-5"
@@ -228,6 +248,16 @@ export default function ContactForm() {
           {serverError}
         </div>
       )}
+
+      {/* Turnstile CAPTCHA */}
+      <TurnstileWidget
+        onToken={setTurnstileToken}
+        onError={() => setServerError('CAPTCHA verification failed. Please try again.')}
+        onExpire={() => {
+          setTurnstileToken('')
+          setServerError('CAPTCHA expired. Please verify again.')
+        }}
+      />
 
       {/* Submit */}
       <button

@@ -66,10 +66,12 @@ export type Step1Data = z.infer<typeof step1Schema>
 export const step2Schema = z.object({
   incidentDescription: z
     .string()
+    .trim()
     .min(20, 'Please provide at least 20 characters describing what happened')
     .max(1000, 'Description too long (max 1,000 characters)'),
   injuryDescription: z
     .string()
+    .trim()
     .min(10, 'Please describe your injuries (at least 10 characters)')
     .max(500, 'Description too long (max 500 characters)'),
   hospitalized: z.boolean(),
@@ -83,11 +85,11 @@ export type Step2Data = z.infer<typeof step2Schema>
 export const step3Schema = z
   .object({
     hasAttorney:       z.boolean(),
-    attorneyFirstName: z.string().max(60).optional(),
-    attorneyLastName:  z.string().max(60).optional(),
-    attorneyFirm:      z.string().max(120).optional(),
-    attorneyPhone:     z.string().optional(),
-    attorneyEmail:     z.string().max(120).optional(),
+    attorneyFirstName: z.string().trim().max(60).optional(),
+    attorneyLastName:  z.string().trim().max(60).optional(),
+    attorneyFirm:      z.string().trim().max(120).optional(),
+    attorneyPhone:     z.string().trim().optional(),
+    attorneyEmail:     z.string().trim().max(120).optional(),
   })
   .superRefine((data, ctx) => {
     // Attorney is a hard requirement — block at schema level
@@ -126,22 +128,27 @@ export type Step3Data = z.infer<typeof step3Schema>
 export const step4Schema = z.object({
   firstName: z
     .string()
+    .trim()
     .min(1, 'First name is required')
-    .max(60),
+    .max(60, 'First name must be 60 characters or less'),
   lastName: z
     .string()
+    .trim()
     .min(1, 'Last name is required')
-    .max(60),
+    .max(60, 'Last name must be 60 characters or less'),
   email: z
     .string()
+    .trim()
     .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+    .email('Please enter a valid email address')
+    .max(255, 'Email is too long'),
   phone: phoneValidator,
-  streetAddress: z.string().max(120).optional(),
+  streetAddress: z.string().trim().max(120).optional(),
   city: z
     .string()
+    .trim()
     .min(1, 'City is required')
-    .max(80),
+    .max(80, 'City must be 80 characters or less'),
   zipCode: z
     .string()
     .regex(/^\d{5}$/, 'Enter a 5-digit ZIP code')
@@ -150,7 +157,7 @@ export const step4Schema = z.object({
   urgency: z
     .enum(['immediately', 'within-a-week', 'within-a-month'])
     .optional(),
-  heardAboutUs: z.string().max(200).optional(),
+  heardAboutUs: z.string().trim().max(200).optional(),
 })
 
 export type Step4Data = z.infer<typeof step4Schema>

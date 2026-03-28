@@ -118,7 +118,7 @@ export default async function CaseTypePage({ params }: Props) {
   // Get common cities
   const relatedCities = caseType.commonCities
     .map((slug) => CITIES.find((city) => city.slug === slug))
-    .filter(Boolean)
+    .filter((city) => city !== undefined)
     .slice(0, 3)
 
   // ── JSON-LD ────────────────────────────────────────────────────────────────

@@ -59,7 +59,7 @@ function buildCityFAQs(city: MichiganCity) {
     {
       id:       `city-faq-4-${city.slug}`,
       question: `Do I need an attorney in ${name} to qualify?`,
-      answer:   `Yes — an active case represented by a licensed Michigan attorney is required to qualify for pre-settlement funding. This isn't just a formality: we work directly with your attorney to evaluate your case's strength and estimate settlement value. If you don't yet have an attorney, we recommend consulting with a ${name}-area personal injury attorney before applying. We can sometimes assist with referrals — call us at (888) 500-0050.`,
+      answer:   `Yes — an active case represented by a licensed Michigan attorney is required to qualify for pre-settlement funding. This isn't just a formality: we work directly with your attorney to evaluate your case's strength and estimate settlement value. If you don't yet have an attorney, we recommend consulting with a ${name}-area personal injury attorney before applying. We can sometimes assist with referrals — call us at (877) 863-2955.`,
     },
     {
       id:       `city-faq-5-${city.slug}`,

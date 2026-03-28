@@ -142,7 +142,7 @@ export default function CityHero({ city }: CityHeroProps) {
                 </div>
                 <div>
                   <p className="text-[11px] text-slate-400">Questions? Call us</p>
-                  <p className="text-sm font-semibold text-white">(888) 500-0050</p>
+                  <p className="text-sm font-semibold text-white">(877) 863-2955</p>
                 </div>
               </Link>
             </div>

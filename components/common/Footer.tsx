@@ -72,7 +72,7 @@ export default function Footer() {
                 className="flex items-start gap-3 text-sm text-slate-400 hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded py-1 px-1"
               >
                 <Phone size={16} className="text-[#C9A84C] mt-1 flex-shrink-0" />
-                <span>(888) 500-0050</span>
+                <span>(877) 863-2955</span>
               </a>
               <a
                 href="mailto:hello@5000tomorrow.com"

@@ -195,7 +195,7 @@ export default function CityTrustSection({ city }: CityTrustSectionProps) {
               className="inline-flex items-center gap-2 h-12 px-6 rounded-xl border-2 border-[#0A1628] text-[#0A1628] font-semibold text-sm cursor-pointer hover:bg-[#0A1628] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
             >
               <Phone aria-hidden="true" size={15} />
-              (888) 500-0050
+              (877) 863-2955
             </Link>
             <ApplyButton
               size="md"

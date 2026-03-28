@@ -212,7 +212,7 @@ export default function Step1CaseType({ formData, onNext }: Step1Props) {
         control={control}
         render={({ field }) => (
           <fieldset className="mb-2">
-            <legend className="block text-sm font-semibold text-slate-700 mb-2">
+            <legend className="block text-sm font-semibold text-slate-700 mb-3">
               Has a lawsuit been filed for this case?
               <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>
             </legend>
@@ -220,28 +220,33 @@ export default function Step1CaseType({ formData, onNext }: Step1Props) {
               {[
                 { value: true,  label: 'Yes, lawsuit filed' },
                 { value: false, label: 'No, not yet' },
-              ].map((opt) => (
-                <label
-                  key={String(opt.value)}
-                  className={cn(
-                    'flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border-2 cursor-pointer',
-                    'text-sm font-medium transition-all duration-150',
-                    field.value === opt.value
-                      ? 'border-[#C9A84C] bg-[#C9A84C]/6 text-[#0A1628]'
-                      : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300',
-                  )}
-                >
-                  <input
-                    type="radio"
-                    className="sr-only"
-                    aria-label={opt.label}
-                    checked={field.value === opt.value}
-                    onChange={() => field.onChange(opt.value)}
-                    onBlur={field.onBlur}
-                  />
-                  {opt.label}
-                </label>
-              ))}
+              ].map((opt, idx) => {
+                const inputId = `lawsuit-${opt.value}-${idx}`
+                return (
+                  <label
+                    key={String(opt.value)}
+                    htmlFor={inputId}
+                    className={cn(
+                      'flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border-2 cursor-pointer',
+                      'text-sm font-medium transition-all duration-150',
+                      field.value === opt.value
+                        ? 'border-[#C9A84C] bg-[#C9A84C]/6 text-[#0A1628]'
+                        : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50',
+                    )}
+                  >
+                    <input
+                      id={inputId}
+                      type="radio"
+                      className="sr-only"
+                      value={String(opt.value)}
+                      checked={field.value === opt.value}
+                      onChange={() => field.onChange(opt.value)}
+                      onBlur={field.onBlur}
+                    />
+                    {opt.label}
+                  </label>
+                )
+              })}
             </div>
             <FieldError message={errors.hasActiveLawsuit?.message} />
           </fieldset>

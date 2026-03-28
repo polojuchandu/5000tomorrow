@@ -93,7 +93,7 @@ export default function AttorneySection() {
                 className="inline-flex items-center gap-2 h-14 px-6 rounded-xl border-2 border-white/20 text-white font-semibold hover:border-white/40 hover:bg-white/5 transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
               >
                 <Phone aria-hidden="true" size={17} />
-                (888) 500-0050
+                (877) 863-2955
               </Link>
             </div>
 

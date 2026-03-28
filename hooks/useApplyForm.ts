@@ -185,32 +185,38 @@ export function useApplyForm(): UseApplyFormReturn {
   const submitForm = useCallback(
     async (finalStepData: Partial<Step5Data>) => {
       const merged = { ...formData, ...finalStepData } as ApplyDraft
+      console.log('[useApplyForm] submitForm called with merged data:', merged)
       setFormData(merged)
       setSubmitting(true)
       setSubmitError(null)
 
       try {
+        console.log('[useApplyForm] Sending request to /api/apply with method POST')
         const res = await fetch('/api/apply', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify(merged),
         })
 
+        console.log('[useApplyForm] Response received:', res.status, res.statusText)
         const json = (await res.json()) as { success: boolean; error?: string }
 
         if (!res.ok || !json.success) {
           const msg = json.error ?? 'Something went wrong. Please try again.'
+          console.error('[useApplyForm] Submission failed:', msg)
           trackFormError(msg)
           setSubmitError(msg)
           return
         }
 
+        console.log('[useApplyForm] ✅ Submission successful')
         trackApplyStep(TOTAL_STEPS, merged)
         trackFormSubmit(merged)
         removeDraft()
         router.push('/apply/confirmation')
-      } catch {
-        const msg = 'Unable to submit. Please check your connection and try again.'
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : 'Unable to submit. Please check your connection and try again.'
+        console.error('[useApplyForm] ❌ Submission failed:', msg)
         trackFormError(msg)
         setSubmitError(msg)
       } finally {

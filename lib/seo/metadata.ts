@@ -7,7 +7,7 @@ export const SITE = {
   url:            'https://www.5000tomorrow.com',
   name:           '5000 Tomorrow',
   legalName:      '5000 Tomorrow LLC',
-  phone:          '(888) 500-0050',
+  phone:          '(877) 863-2955',
   phoneE164:      '+18885000050',
   email:          'info@5000tomorrow.com',
   address: {

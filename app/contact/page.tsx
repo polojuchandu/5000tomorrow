@@ -14,7 +14,7 @@ import ContactForm from '@/components/forms/ContactForm'
 
 export const metadata: Metadata = {
   title:       'Contact Us | 5000 Tomorrow Michigan Legal Funding',
-  description: 'Get in touch with 5000 Tomorrow. Questions about your application, eligibility, or pre-settlement funding in Michigan? Call (888) 500-0050 or send a message.',
+  description: 'Get in touch with 5000 Tomorrow. Questions about your application, eligibility, or pre-settlement funding in Michigan? Call (877) 863-2955 or send a message.',
   alternates:  { canonical: `${SITE.url}/contact` },
   openGraph: {
     type:        'website',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card:        'summary_large_image',
     site:        SITE.twitter,
     title:       'Contact 5000 Tomorrow | Michigan Pre-Settlement Funding',
-    description: 'Questions about Michigan pre-settlement funding? Call (888) 500-0050 or message us.',
+    description: 'Questions about Michigan pre-settlement funding? Call (877) 863-2955 or message us.',
   },
 }
 

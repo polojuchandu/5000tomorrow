@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { attorneyReferralSchema }     from '@/lib/validations/attorney-referral'
+import { saveSubmission, initDB }     from '@/lib/db/mysql'
+import { notifyTeamOfSubmission } from '@/lib/email/send'
+import { verifyTurnstileToken } from '@/lib/turnstile/verify'
+import { sanitizeObject, SANITIZATION_SCHEMAS } from '@/lib/utils/sanitizer'
 import type { ApiResponse }           from '@/types'
 
 interface RateLimitRecord { count: number; resetAt: number }
@@ -78,6 +82,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json<ApiResponse>({ success: false, error: 'Invalid request.' }, { status: 400 })
   }
 
+  // Verify Turnstile token
+  const bodyObj = body as Record<string, unknown>
+  const turnstileToken = bodyObj.turnstileToken as string | undefined
+  
+  if (!turnstileToken) {
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'CAPTCHA verification is required.' },
+      { status: 422 },
+    )
+  }
+
+  const isValidToken = await verifyTurnstileToken(turnstileToken)
+  if (!isValidToken) {
+    console.warn('[API /attorney-referral] Invalid Turnstile token')
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'CAPTCHA verification failed. Please try again.' },
+      { status: 422 },
+    )
+  }
+
   const result = attorneyReferralSchema.safeParse(body)
   if (!result.success) {
     return NextResponse.json<ApiResponse>(
@@ -90,19 +114,55 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     )
   }
 
-  const [webhookResult, notifyResult] = await Promise.allSettled([
-    forwardToWebhook(result.data),
-    notifyTeam(result.data),
+  // Sanitize all fields before saving
+  const sanitizedData = sanitizeObject(result.data as Record<string, unknown>, SANITIZATION_SCHEMAS['attorney-referral'])
+
+  // Initialize database if needed
+  try {
+    await initDB()
+  } catch (error) {
+    console.error('[API /attorney-referral] Database init error:', error)
+  }
+
+  // Save to database and forward webhook in parallel
+  const [dbResult, webhookResult, notifyResultOld] = await Promise.allSettled([
+    saveSubmission('attorney-referral', sanitizedData),
+    forwardToWebhook(sanitizedData),
+    notifyTeam(sanitizedData),
   ])
 
+  // Check if database save succeeded
+  if (dbResult.status === 'rejected') {
+    console.error('[API /attorney-referral] Database save failed:', dbResult.reason)
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'Failed to save referral. Please try again.' },
+      { status: 500 },
+    )
+  }
+
+  // Database save succeeded
+  const submissionId = dbResult.value
+
+  // Webhook and debug logging are optional — log but don't block
   if (webhookResult.status === 'rejected') {
     console.error('[API /attorney-referral] Webhook failed:', webhookResult.reason)
   }
-  if (notifyResult.status === 'rejected') {
-    console.error('[API /attorney-referral] Notify failed:', notifyResult.reason)
+  if (notifyResultOld.status === 'rejected') {
+    console.error('[API /attorney-referral] Debug notify failed:', notifyResultOld.reason)
+  }
+
+  // Now that database save succeeded, notify team (non-blocking)
+  const notifyTeamResult = await notifyTeamOfSubmission('attorney-referral', sanitizedData)
+  
+  if (notifyTeamResult instanceof Error) {
+    console.warn('[API /attorney-referral] Team notification failed:', notifyTeamResult)
   }
 
   const leadId = webhookResult.status === 'fulfilled' ? webhookResult.value : undefined
+
+  if (process.env.NODE_ENV === 'development' && dbResult.status === 'fulfilled') {
+    console.log('[API /attorney-referral] Saved to database:', dbResult.value)
+  }
 
   return NextResponse.json<ApiResponse>(
     { success: true, leadId },

@@ -151,7 +151,7 @@ export default function ConfirmationPage() {
               className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl border-2 border-[#0A1628] text-[#0A1628] font-semibold text-sm hover:bg-[#0A1628] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
             >
               <Phone aria-hidden="true" size={14} />
-              (888) 500-0050
+              (877) 863-2955
             </Link>
             <Link
               href="/faq"

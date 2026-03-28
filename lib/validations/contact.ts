@@ -14,18 +14,23 @@ export type ContactSubject = (typeof CONTACT_SUBJECTS)[number]['value']
 export const contactSchema = z.object({
   firstName: z
     .string()
+    .trim()
     .min(1, 'First name is required')
-    .max(60),
+    .max(60, 'First name must be 60 characters or less'),
   lastName: z
     .string()
+    .trim()
     .min(1, 'Last name is required')
-    .max(60),
+    .max(60, 'Last name must be 60 characters or less'),
   email: z
     .string()
+    .trim()
     .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+    .email('Please enter a valid email address')
+    .max(255, 'Email is too long'),
   phone: z
     .string()
+    .trim()
     .optional()
     .refine(
       (v) => !v || v.replace(/\D/g, '').length === 10,
@@ -36,6 +41,7 @@ export const contactSchema = z.object({
   ).refine((v) => v !== undefined, 'Please select a subject'),
   message: z
     .string()
+    .trim()
     .min(10, 'Please provide a message (at least 10 characters)')
     .max(2000, 'Message is too long (max 2,000 characters)'),
 })

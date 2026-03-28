@@ -117,7 +117,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-xs text-slate-400">Questions? Call us</p>
-                  <p className="text-sm font-semibold text-white">(888) 500-0050</p>
+                  <p className="text-sm font-semibold text-white">(877) 863-2955</p>
                 </div>
               </Link>
               <span aria-hidden="true" className="text-slate-600">|</span>

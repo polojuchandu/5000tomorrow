@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { fullApplySchema }           from '@/lib/validations/apply'
 import { submitToCRM }               from '@/lib/crm/submit'
+import { saveSubmission, initDB }    from '@/lib/db/mysql'
+import { notifyTeamOfSubmission } from '@/lib/email/send'
+import { verifyTurnstileToken } from '@/lib/turnstile/verify'
+import { sanitizeObject, SANITIZATION_SCHEMAS } from '@/lib/utils/sanitizer'
 import type { ApiResponse, FullApplyFormData } from '@/types'
 
 // ─── In-memory rate limiter (replace with Redis/Upstash in production) ────────
@@ -39,44 +43,14 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number; rese
   }
 }
 
-// ─── Sanitize string fields ───────────────────────────────────────────────────
+// ─── Sanitize input ───────────────────────────────────────────────────────────
 
-function sanitizeString(val: unknown): string | undefined {
-  if (typeof val !== 'string') return undefined
-  return val.trim().slice(0, 2000)
-}
-
-function sanitizeLead(data: FullApplyFormData): FullApplyFormData {
-  return {
-    ...data,
-    incidentDescription: sanitizeString(data.incidentDescription) ?? '',
-    injuryDescription:   sanitizeString(data.injuryDescription)   ?? '',
-    attorneyFirstName:   sanitizeString(data.attorneyFirstName)   ?? '',
-    attorneyLastName:    sanitizeString(data.attorneyLastName)    ?? '',
-    attorneyFirm:        sanitizeString(data.attorneyFirm)        ?? '',
-    attorneyEmail:       sanitizeString(data.attorneyEmail),
-    firstName:           sanitizeString(data.firstName)           ?? '',
-    lastName:            sanitizeString(data.lastName)            ?? '',
-    streetAddress:       sanitizeString(data.streetAddress),
-    city:                sanitizeString(data.city)                ?? '',
-    heardAboutUs:        sanitizeString(data.heardAboutUs),
+function sanitizeLead(data: unknown): FullApplyFormData {
+  if (typeof data !== 'object' || data === null) {
+    return {} as FullApplyFormData
   }
-}
-
-// ─── Notification stub ────────────────────────────────────────────────────────
-
-async function sendConfirmation(lead: FullApplyFormData): Promise<void> {
-  // TODO: Send applicant a confirmation email via Resend/SendGrid
-  // await resend.emails.send({
-  //   to:      lead.email,
-  //   from:    'no-reply@5000tomorrow.com',
-  //   subject: 'We received your application — 5000 Tomorrow',
-  //   react:   ConfirmationEmailTemplate({ firstName: lead.firstName }),
-  // })
-
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[API /apply] 📧 Confirmation sent to:', lead.email)
-  }
+  // Use the new sanitizer to clean all fields
+  return sanitizeObject(data as Record<string, unknown>, SANITIZATION_SCHEMAS.apply) as FullApplyFormData
 }
 
 // ─── POST /api/apply ──────────────────────────────────────────────────────────
@@ -115,6 +89,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     )
   }
 
+  // 3.5. Verify Turnstile token
+  const bodyObj = body as Record<string, unknown>
+  const turnstileToken = bodyObj.turnstileToken as string | undefined
+  
+  if (!turnstileToken) {
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'CAPTCHA verification is required.' },
+      { status: 422, headers: rateLimitHeaders },
+    )
+  }
+
+  const isValidToken = await verifyTurnstileToken(turnstileToken)
+  if (!isValidToken) {
+    console.warn('[API /apply] Invalid Turnstile token')
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'CAPTCHA verification failed. Please try again.' },
+      { status: 422, headers: rateLimitHeaders },
+    )
+  }
+
   // 4. Validate with Zod
   const parseResult = fullApplySchema.safeParse(body)
   if (!parseResult.success) {
@@ -139,23 +133,50 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     )
   }
 
-  // 7. Submit to CRM + send confirmation (failures don't block the user)
+  // 7. Save to database first (required for successful submission)
   let leadId: string | undefined
 
-  const [crmResult, confirmResult] = await Promise.allSettled([
+  // Ensure database is initialized
+  try {
+    await initDB()
+  } catch (error) {
+    console.warn('[API /apply] Database initialization failed:', error)
+  }
+
+  // Save to database and submit to CRM in parallel (both critical)
+  const [dbResult, crmResult] = await Promise.allSettled([
+    saveSubmission('apply', lead),
     submitToCRM(lead),
-    sendConfirmation(lead),
   ])
 
+  // Check if database save succeeded
+  if (dbResult.status === 'rejected') {
+    console.error('[API /apply] Database save failed:', dbResult.reason)
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'Failed to save submission. Please try again.' },
+      { status: 500, headers: rateLimitHeaders },
+    )
+  }
+
+  // Database save succeeded — get submission ID
+  const submissionId = dbResult.value
+
+  // CRM submission is optional — log but don't block
   if (crmResult.status === 'fulfilled') {
     leadId = crmResult.value.leadId
   } else {
     console.error('[API /apply] CRM submission failed:', crmResult.reason)
-    // Log and continue — don't block the user
   }
 
-  if (confirmResult.status === 'rejected') {
-    console.error('[API /apply] Confirmation email failed:', confirmResult.reason)
+  // Now that database save succeeded, notify team (non-blocking)
+  const notifyResult = await notifyTeamOfSubmission('apply', lead)
+  
+  if (notifyResult instanceof Error) {
+    console.warn('[API /apply] Team notification failed:', notifyResult)
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[API /apply] ✅ Submission complete:', { submissionId, leadId })
   }
 
   return NextResponse.json<ApiResponse>(

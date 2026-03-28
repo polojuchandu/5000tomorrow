@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Google Tag Manager noscript iframe */
+noscript iframe {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 @layer base {
   :root {
     --background: oklch(1 0 0);

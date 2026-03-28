@@ -84,7 +84,7 @@ const FAQS = [
     id:       'faq-eligibility-1',
     category: 'Eligibility',
     question: 'Do I need an attorney to qualify?',
-    answer:   'Yes. An active case represented by a licensed Michigan attorney is required. This isn\'t just a formality — we work directly with your attorney to evaluate your case\'s strength and estimate settlement value. If you don\'t yet have an attorney, we strongly recommend consulting one before applying. We can sometimes help with referrals — call (888) 500-0050.',
+    answer:   'Yes. An active case represented by a licensed Michigan attorney is required. This isn\'t just a formality — we work directly with your attorney to evaluate your case\'s strength and estimate settlement value. If you don\'t yet have an attorney, we strongly recommend consulting one before applying. We can sometimes help with referrals — call (877) 863-2955.',
   },
   {
     id:       'faq-eligibility-2',
@@ -138,7 +138,7 @@ const FAQS = [
     id:       'faq-getting-3',
     category: 'Getting Funded',
     question: 'What types of cases do you fund?',
-    answer:   'We fund personal injury cases in Michigan, including: car accidents, truck accidents, motorcycle accidents, pedestrian accidents, rideshare (Uber/Lyft) accidents, hit-and-run accidents, bicycle accidents, slip and fall injuries, workplace injuries, workers\' compensation cases, wrongful death claims, and premises liability. If you\'re unsure about your case type, call us at (888) 500-0050.',
+    answer:   'We fund personal injury cases in Michigan, including: car accidents, truck accidents, motorcycle accidents, pedestrian accidents, rideshare (Uber/Lyft) accidents, hit-and-run accidents, bicycle accidents, slip and fall injuries, workplace injuries, workers\' compensation cases, wrongful death claims, and premises liability. If you\'re unsure about your case type, call us at (877) 863-2955.',
   },
   {
     id:       'faq-getting-4',
@@ -276,7 +276,7 @@ export default function FAQPage() {
                 data-event-category="contact"
                 className="inline-flex items-center gap-2 h-12 px-6 rounded-xl border-2 border-[#0A1628] text-[#0A1628] font-semibold text-sm hover:bg-[#0A1628] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
               >
-                (888) 500-0050
+                (877) 863-2955
               </Link>
               <Link
                 href="/contact"

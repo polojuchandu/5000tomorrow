@@ -97,7 +97,7 @@ export default function NotFound() {
             className="inline-flex items-center gap-2 text-[#C9A84C] hover:text-[#e0c068] transition-colors duration-200 font-semibold text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded-lg"
           >
             <Phone aria-hidden="true" size={15} />
-            (888) 500-0050
+            (877) 863-2955
           </Link>
         </div>
 

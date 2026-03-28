@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { contactSchema }             from '@/lib/validations/contact'
+import { saveSubmission, initDB }    from '@/lib/db/mysql'
+import { notifyTeamOfSubmission } from '@/lib/email/send'
+import { verifyTurnstileToken } from '@/lib/turnstile/verify'
+import { sanitizeObject, SANITIZATION_SCHEMAS } from '@/lib/utils/sanitizer'
 import type { ApiResponse }          from '@/types'
 
 interface RateLimitRecord { count: number; resetAt: number }
@@ -51,6 +55,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json<ApiResponse>({ success: false, error: 'Invalid request.' }, { status: 400 })
   }
 
+  // Extract and verify Turnstile token
+  const bodyObj = body as Record<string, unknown>
+  const turnstileToken = bodyObj.turnstileToken as string | undefined
+  
+  if (!turnstileToken) {
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'CAPTCHA verification is required.' },
+      { status: 422 },
+    )
+  }
+
+  const isValidToken = await verifyTurnstileToken(turnstileToken)
+  if (!isValidToken) {
+    console.warn('[API /contact] Invalid Turnstile token')
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'CAPTCHA verification failed. Please try again.' },
+      { status: 422 },
+    )
+  }
+
   const result = contactSchema.safeParse(body)
   if (!result.success) {
     return NextResponse.json<ApiResponse>(
@@ -63,16 +87,47 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     )
   }
 
-  const [err] = await Promise.allSettled([forwardToWebhook(result.data)])
-    .then((r) => r.map((x) => (x.status === 'rejected' ? x.reason : null)))
+  const sanitizedData = sanitizeObject(result.data as Record<string, unknown>, SANITIZATION_SCHEMAS.contact)
 
-  if (err) {
-    console.error('[API /contact] Webhook failed:', err)
-    // Still return success — don't block the user if webhook is down
+  // Ensure database is initialized
+  try {
+    await initDB()
+  } catch (error) {
+    console.warn('[API /contact] Database initialization failed:', error)
+  }
+
+  // Save to database and forward webhook in parallel
+  const [dbResult, webhookResult] = await Promise.allSettled([
+    saveSubmission('contact', sanitizedData),
+    forwardToWebhook(sanitizedData),
+  ])
+
+  // Check if database save succeeded
+  if (dbResult.status === 'rejected') {
+    console.error('[API /contact] Database save failed:', dbResult.reason)
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'Failed to save message. Please try again.' },
+      { status: 500 },
+    )
+  }
+
+  // Database save succeeded
+  const submissionId = dbResult.value
+
+  // Webhook is optional — log but don't block
+  if (webhookResult.status === 'rejected') {
+    console.warn('[API /contact] Webhook failed:', webhookResult.reason)
+  }
+
+  // Now that database save succeeded, notify team (non-blocking)
+  const notifyResult = await notifyTeamOfSubmission('contact', sanitizedData)
+  
+  if (notifyResult instanceof Error) {
+    console.warn('[API /contact] Team notification failed:', notifyResult)
   }
 
   if (process.env.NODE_ENV === 'development') {
-    console.log('[API /contact] Message received:', result.data)
+    console.log('[API /contact] ✅ Message saved and confirmation sent:', submissionId)
   }
 
   return NextResponse.json<ApiResponse>({ success: true }, { status: 200 })

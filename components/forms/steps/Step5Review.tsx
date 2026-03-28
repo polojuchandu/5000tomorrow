@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
@@ -7,6 +8,7 @@ import { Pencil, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { step5Schema, CASE_TYPE_OPTIONS, type Step5Data } from '@/lib/validations/apply'
 import type { ApplyDraft } from '@/hooks/useApplyForm'
+import TurnstileWidget from '@/components/ui/turnstile'
 
 interface Step5Props {
   formData:     ApplyDraft
@@ -76,6 +78,9 @@ export default function Step5Review({
   isSubmitting,
   submitError,
 }: Step5Props) {
+  const [turnstileToken, setTurnstileToken] = useState<string>('')
+  const [captchaError, setCaptchaError] = useState<string>('')
+
   const {
     control,
     handleSubmit,
@@ -109,7 +114,22 @@ export default function Step5Review({
   return (
     <form
       id="step-5-form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => {
+        console.log('[Step5Review] Form submission event captured')
+        e.preventDefault()
+
+        if (!turnstileToken) {
+          setCaptchaError('Please complete the CAPTCHA verification.')
+          return
+        }
+
+        setCaptchaError('')
+        handleSubmit(async (data) => {
+          await onSubmit({ ...data, turnstileToken } as any)
+        })(e).catch((err) => {
+          console.error('[Step5Review] handleSubmit error:', err)
+        })
+      }}
       noValidate
       aria-label="Step 5: Review and submit your application"
     >
@@ -249,6 +269,30 @@ export default function Step5Review({
           <p className="text-sm text-red-700">{submitError}</p>
         </div>
       )}
+
+      {/* Captcha error */}
+      {captchaError && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 mb-4"
+        >
+          <AlertCircle aria-hidden="true" size={18} className="text-red-500 shrink-0 mt-0.5" />
+          <p className="text-sm text-red-700">{captchaError}</p>
+        </div>
+      )}
+
+      {/* Turnstile CAPTCHA */}
+      <div className="mb-6">
+        <TurnstileWidget
+          onToken={setTurnstileToken}
+          onError={() => setCaptchaError('CAPTCHA verification failed. Please try again.')}
+          onExpire={() => {
+            setTurnstileToken('')
+            setCaptchaError('CAPTCHA expired. Please verify again.')
+          }}
+        />
+      </div>
 
       {/* Navigation */}
       <div className="flex gap-3">

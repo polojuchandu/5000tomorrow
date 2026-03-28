@@ -21,29 +21,29 @@ const phoneValidator = z
 
 export const attorneyReferralSchema = z.object({
   // ── Attorney information ──────────────────────────────────────────────────
-  attorneyFirstName: z.string().min(1, 'First name is required').max(60),
-  attorneyLastName:  z.string().min(1, 'Last name is required').max(60),
-  firmName:          z.string().min(1, 'Firm name is required').max(120),
-  barNumber:         z.string().max(20).optional(),
+  attorneyFirstName: z.string().trim().min(1, 'First name is required').max(60, 'First name must be 60 characters or less'),
+  attorneyLastName:  z.string().trim().min(1, 'Last name is required').max(60, 'Last name must be 60 characters or less'),
+  firmName:          z.string().trim().min(1, 'Firm name is required').max(120, 'Firm name must be 120 characters or less'),
+  barNumber:         z.string().trim().max(20, 'Bar number must be 20 characters or less').optional(),
   licenseState:      z.literal('MI').refine(
     (v) => v === 'MI',
     'Must be a licensed Michigan attorney',
   ),
   attorneyPhone:     phoneValidator,
-  attorneyEmail:     z.string().email('Valid email required'),
+  attorneyEmail:     z.string().trim().email('Valid email required').max(255, 'Email is too long'),
 
   // ── Client information ────────────────────────────────────────────────────
-  clientFirstName:   z.string().min(1, 'Client first name is required').max(60),
-  clientLastName:    z.string().min(1, 'Client last name is required').max(60),
+  clientFirstName:   z.string().trim().min(1, 'Client first name is required').max(60, 'Client first name must be 60 characters or less'),
+  clientLastName:    z.string().trim().min(1, 'Client last name is required').max(60, 'Client last name must be 60 characters or less'),
   clientPhone:       phoneValidator,
-  clientEmail:       z.string().email('Invalid email').optional(),
+  clientEmail:       z.string().trim().email('Invalid email').max(255, 'Email is too long').optional(),
 
   // ── Case details ──────────────────────────────────────────────────────────
-  caseType:              z.string().min(1, 'Please select a case type'),
+  caseType:              z.string().trim().min(1, 'Please select a case type'),
   estimatedSettlement:   z.enum(
     ESTIMATED_SETTLEMENT_OPTIONS.map((o) => o.value) as [EstimatedSettlement, ...EstimatedSettlement[]],
   ).optional(),
-  notes:                 z.string().max(1000, 'Notes too long (max 1,000 characters)').optional(),
+  notes:                 z.string().trim().max(1000, 'Notes too long (max 1,000 characters)').optional(),
 
   // ── Consent ───────────────────────────────────────────────────────────────
   agreeToTerms: z.literal(true).refine(
