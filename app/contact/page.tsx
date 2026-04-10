@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Phone, Mail, Clock, MapPin } from 'lucide-react'
+import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa'
+import { BUSINESS } from '@/lib/constants/business'
 
 import { SITE } from '@/lib/seo/metadata'
 import {
@@ -11,6 +13,12 @@ import {
   serializeSchema,
 } from '@/lib/seo/schema'
 import ContactForm from '@/components/forms/ContactForm'
+
+const SOCIAL_LINKS = [
+  { icon: FaFacebookF, href: BUSINESS.social.facebook, label: 'Facebook' },
+  { icon: FaInstagram, href: BUSINESS.social.instagram, label: 'Instagram' },
+  { icon: FaYoutube, href: BUSINESS.social.youtube, label: 'YouTube' },
+]
 
 export const metadata: Metadata = {
   title:       'Contact Us | 5000 Tomorrow Michigan Legal Funding',
@@ -185,6 +193,27 @@ export default function ContactPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Social Links */}
+                <div className="rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 p-5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-4">
+                    Follow Us
+                  </p>
+                  <div className="flex gap-3">
+                    {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Follow us on ${label}`}
+                        className="w-10 h-10 rounded-lg bg-[#0A1628] text-white hover:bg-[#C9A84C] hover:text-[#0A1628] transition-colors duration-200 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
+                      >
+                        <Icon size={18} aria-hidden="true" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Disclaimer note */}

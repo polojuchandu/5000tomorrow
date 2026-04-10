@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Phone, Globe, Heart, Send, Share2 } from 'lucide-react'
+import { MapPin, Phone, Globe } from 'lucide-react'
+import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa'
 import { BUSINESS } from '@/lib/constants/business'
 
 const QUICK_LINKS = [
@@ -22,9 +23,9 @@ const CASE_TYPES_LINKS = [
 ]
 
 const SOCIAL_LINKS = [
-  { icon: Share2, href: BUSINESS.social.facebook, label: 'Facebook' },
-  { icon: Heart, href: BUSINESS.social.instagram, label: 'Instagram' },
-  { icon: Send, href: BUSINESS.social.twitter, label: 'Twitter' },
+  { icon: FaFacebookF, href: BUSINESS.social.facebook, label: 'Facebook' },
+  { icon: FaInstagram, href: BUSINESS.social.instagram, label: 'Instagram' },
+  { icon: FaYoutube, href: BUSINESS.social.youtube, label: 'YouTube' },
 ]
 
 const currentYear = new Date().getFullYear()
@@ -177,9 +178,22 @@ export default function Footer() {
         <div className="pt-8 space-y-6">
           {/* Copyright & Legal Links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <p className="text-xs text-slate-500">
-              © {currentYear} {BUSINESS.name}. All Rights Reserved.
-            </p>
+            <div className="space-y-1">
+              <p className="text-xs text-slate-500">
+                © {currentYear} {BUSINESS.name}. All Rights Reserved.
+              </p>
+              <p className="text-xs text-slate-500">
+                Designed and developed by{' '}
+                <a
+                  href="https://poloju.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#C9A84C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] rounded px-1 py-0.5"
+                >
+                  poloju.dev
+                </a>
+              </p>
+            </div>
             <ul className="flex flex-wrap gap-4 text-xs">
               <li>
                 <Link

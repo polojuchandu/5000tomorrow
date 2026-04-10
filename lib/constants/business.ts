@@ -28,9 +28,9 @@ export const BUSINESS = {
 
   // Social (placeholder handles)
   social: {
-    facebook: 'https://facebook.com/5000tomorrow',
-    instagram: 'https://instagram.com/5000tomorrow',
-    twitter: 'https://twitter.com/5000tomorrow',
+    facebook: 'https://www.facebook.com/profile.php?id=61573226878590',
+    instagram: 'https://www.instagram.com/5000tomorrow_mi/',
+    youtube: 'https://www.youtube.com/@5000Tomorrow',
   },
 } as const
 
